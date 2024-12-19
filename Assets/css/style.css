@@ -1,0 +1,12 @@
+.icon {
+display: inline-block;
+height: 3rem;
+width: 3rem;
+background: no-repeat center;
+background-size: cover;
+margin-left: 15%;
+}
+
+#forecast {
+    visibility: hidden;
+}
