@@ -52,7 +52,7 @@ function forecast() {
     if (city.value) citySearch = city.value;
     historyUpdate();
 
-    let weatherForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=e06e2419614d4cd0a3b23048241812&days=5&q=${citySearch}`
+    let weatherForecastUrl = `https://api.weatherapi.com/v1/forecast.json?key=e06e2419614d4cd0a3b23048241812&days=5&q=${citySearch}`
     city.value = "";
     fetch(weatherForecastUrl)
         .then(response => response.json())
@@ -63,7 +63,7 @@ function forecast() {
             feels.textContent = `Feels like ${data.current.feelslike_f}°F / ${data.current.feelslike_c}°C`
             curHumidity.textContent = `Humidity: ${data.current.humidity}%`;
             curWind.textContent = `Wind: ${data.current.wind_mph} mph`;
-            iconNow.style.backgroundImage = `url(http:${data.current.condition.icon})`
+            iconNow.style.backgroundImage = `url(https:${data.current.condition.icon})`
             for (let i = 0; i < 4; i++) {
                 const date = document.getElementById(`forDate${i}`)
                 const icon = document.getElementById(`icon${i}`);
@@ -71,7 +71,7 @@ function forecast() {
                 const minTemp = document.getElementById(`minTemp${i}`);
                 const rain = document.getElementById(`rain${i}`);
                 const snow = document.getElementById(`snow${i}`);
-                icon.style.backgroundImage = `url(http:${data.forecast.forecastday[i].day.condition.icon})`
+                icon.style.backgroundImage = `url(https:${data.forecast.forecastday[i].day.condition.icon})`
                 date.textContent = data.forecast.forecastday[i].date
                 maxTemp.textContent = `Max Temp: ${data.forecast.forecastday[i].day.maxtemp_f}°F / ${data.forecast.forecastday[i].day.maxtemp_c}°C`;
                 minTemp.textContent = `Min Temp: ${data.forecast.forecastday[i].day.mintemp_f}°F / ${data.forecast.forecastday[i].day.mintemp_c}°C`;
