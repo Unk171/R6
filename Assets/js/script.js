@@ -10,7 +10,6 @@ const feels = document.getElementById("feels");
 const iconNow = document.getElementById("iconNow");
 const forecastEl = document.getElementById("forecast");
 const historyEl = document.getElementById("historyEl");
-let history = [];
 let citySearch;
 
 const currentDate = new Date();
@@ -26,30 +25,19 @@ const formattedWeekday = new Intl.DateTimeFormat("en-US", {
 date.textContent = formattedDate;
 weekday.textContent = formattedWeekday;
 
-
-
 function historyUpdate() {
-    
-}:
-
-
-
-function forecast() {
-    // citySearch = "";
-    history = JSON.parse(localStorage.getItem("history")) || [];
-    forecastEl.style.visibility = "visible";
-    if (city.value) citySearch = city.value;
-    if (!history.includes(citySearch)) {
+    const history = JSON.parse(localStorage.getItem("history")) || [];
+    if (!history.includes(citySearch) && citySearch) {
         history.unshift(citySearch);
-        if (history.length < 10) history.pop();
+        if (history.length > 10) history.pop();
         localStorage.setItem("history", JSON.stringify(history));
-    }
-
+    };
     historyEl.innerHTML = "";
     if (history) {
         for (let i = 0; i < history.length; i++) {
             const historyButton = document.createElement("button");
             historyButton.textContent = history[i];
+            historyButton.classList.add("col", "s12", "btn", "blue", "darken-2", "waves-effect", "waves-light", "z-depth-5");
             historyButton.addEventListener("click", () => {
                 citySearch = historyButton.textContent;
                 forecast()
@@ -57,6 +45,12 @@ function forecast() {
             historyEl.appendChild(historyButton);
         }
     }
+};
+
+function forecast() {
+    forecastEl.style.visibility = "visible";
+    if (city.value) citySearch = city.value;
+    historyUpdate();
 
     let weatherForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=e06e2419614d4cd0a3b23048241812&days=5&q=${citySearch}`
     city.value = "";
@@ -87,4 +81,5 @@ function forecast() {
         });
 }
 
+historyUpdate();
 search.addEventListener("click", forecast)
