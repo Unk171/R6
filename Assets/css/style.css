@@ -21,4 +21,18 @@
 
 button {
     margin-bottom: 2%;
+    font-size: 5vw;
 }
+
+@media (max-width: 600px) {
+button {
+    font-size: 70% !important;
+}
+}
+
+@media (max-width: 400px) {
+html {
+    font-size: 70% !important;
+}
+}
+
