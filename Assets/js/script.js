@@ -55,7 +55,12 @@ function forecast() {
     let weatherForecastUrl = `https://api.weatherapi.com/v1/forecast.json?key=e06e2419614d4cd0a3b23048241812&days=5&q=${citySearch}`
     city.value = "";
     fetch(weatherForecastUrl)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("error")
+            };
+            return response.json()
+        })
         .then(data => {
             console.log(data);
             place.textContent = data.location.name;
@@ -78,7 +83,11 @@ function forecast() {
                 rain.textContent = `Chance of rain: ${data.forecast.forecastday[i].day.daily_chance_of_rain}%`;
                 snow.textContent = `Chance of snow: ${data.forecast.forecastday[i].day.daily_chance_of_snow}%`;
             }
-        });
+        })
+        .catch(error => {
+            console.error("error", error);
+            alert("Something went wrong. Probably wrong city name")
+        })
 }
 
 historyUpdate();
