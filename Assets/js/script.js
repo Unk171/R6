@@ -9,6 +9,9 @@ const curWind = document.getElementById("curWind");
 const feels = document.getElementById("feels");
 const iconNow = document.getElementById("iconNow");
 const forecastEl = document.getElementById("forecast");
+const historyEl = document.getElementById("historyEl");
+let history = [];
+let citySearch;
 
 const currentDate = new Date();
 const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -23,16 +26,45 @@ const formattedWeekday = new Intl.DateTimeFormat("en-US", {
 date.textContent = formattedDate;
 weekday.textContent = formattedWeekday;
 
+
+
+function historyUpdate() {
+    
+}:
+
+
+
 function forecast() {
+    // citySearch = "";
+    history = JSON.parse(localStorage.getItem("history")) || [];
     forecastEl.style.visibility = "visible";
-    const citySearch = city.value
+    if (city.value) citySearch = city.value;
+    if (!history.includes(citySearch)) {
+        history.unshift(citySearch);
+        if (history.length < 10) history.pop();
+        localStorage.setItem("history", JSON.stringify(history));
+    }
+
+    historyEl.innerHTML = "";
+    if (history) {
+        for (let i = 0; i < history.length; i++) {
+            const historyButton = document.createElement("button");
+            historyButton.textContent = history[i];
+            historyButton.addEventListener("click", () => {
+                citySearch = historyButton.textContent;
+                forecast()
+            });
+            historyEl.appendChild(historyButton);
+        }
+    }
+
     let weatherForecastUrl = `http://api.weatherapi.com/v1/forecast.json?key=e06e2419614d4cd0a3b23048241812&days=5&q=${citySearch}`
+    city.value = "";
     fetch(weatherForecastUrl)
         .then(response => response.json())
         .then(data => {
             console.log(data);
             place.textContent = data.location.name;
-
             curTemp.textContent = `Temp: ${data.current.temp_f}°F / ${data.current.temp_c}°C`;
             feels.textContent = `Feels like ${data.current.feelslike_f}°F / ${data.current.feelslike_c}°C`
             curHumidity.textContent = `Humidity: ${data.current.humidity}%`;
@@ -51,7 +83,6 @@ function forecast() {
                 minTemp.textContent = `Min Temp: ${data.forecast.forecastday[i].day.mintemp_f}°F / ${data.forecast.forecastday[i].day.mintemp_c}°C`;
                 rain.textContent = `Chance of rain: ${data.forecast.forecastday[i].day.daily_chance_of_rain}%`;
                 snow.textContent = `Chance of snow: ${data.forecast.forecastday[i].day.daily_chance_of_snow}%`;
-
             }
         });
 }
