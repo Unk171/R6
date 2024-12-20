@@ -52,7 +52,7 @@ function forecast() {
     if (city.value) citySearch = city.value;
     historyUpdate();
 
-    let weatherForecastUrl = `https://api.weatherapi.com/v1/forecast.json?key=e06e2419614d4cd0a3b23048241812&days=5&q=${citySearch}`
+    let weatherForecastUrl = `https://api.weatherapi.com/v1/forecast.json?key=e06e2419614d4cd0a3b23048241812&days=6&q=${citySearch}`
     city.value = "";
     fetch(weatherForecastUrl)
         .then(response => {
@@ -69,7 +69,7 @@ function forecast() {
             curHumidity.textContent = `Humidity: ${data.current.humidity}%`;
             curWind.textContent = `Wind: ${data.current.wind_mph} mph`;
             iconNow.style.backgroundImage = `url(https:${data.current.condition.icon})`
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < 6; i++) {
                 const date = document.getElementById(`forDate${i}`)
                 const icon = document.getElementById(`icon${i}`);
                 const maxTemp = document.getElementById(`maxTemp${i}`);
